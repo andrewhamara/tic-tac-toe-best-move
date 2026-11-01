@@ -1,0 +1,9 @@
+_ > nanoagent.plugin.v0001.ProductConfig:
+tagline: "Find the best move on a tic-tac-toe board image"
+summary: "Ask for the best move on one of 50 board images: boards 1 to 40 are 3x3, three in a row wins; 41 to 50 are 4x4, four in a row wins."
+highlights:
+  - "Every board is a real game position: win now, block, set up a fork, or hold the draw"
+  - "Each answer is checked against an exact search of the whole game"
+steps:
+  - "Ask, e.g. find the best move on board 7 (or board 45, a 4x4 board)"
+  - "See the board with the agent's move marked on it, checked"

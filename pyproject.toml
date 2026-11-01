@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nanoagent-tic-tac-toe-best-move"
+version = "0.1.0"
+description = "Find the best move on a tic-tac-toe board image, checked against an exact search of the game: a NanoAgent plugin"
+requires-python = ">=3.12"
+dependencies = ["mcp>=1.27,<2", "slimconfig", "pillow>=11,<13"]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv.sources]
+slimconfig = { git = "https://github.com/zeyuyang8/slimconfig", branch = "master" }
+
+[tool.ruff]
+line-length = 120
+
+[tool.pytest.ini_options]
+# tests/ import contract.py and the verifier package from the plugin root.
+pythonpath = ["."]

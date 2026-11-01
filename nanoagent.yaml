@@ -1,0 +1,38 @@
+_ > nanoagent.plugin.v0001.ManifestConfig:
+id: tic-tac-toe-best-move
+name: Tic-Tac-Toe Best Move
+version: 0.1.0
+status: ready
+spec: nanoagent.plugin/v0001
+
+runtime > nanoagent.plugin.v0001.RuntimeConfig:
+  type: mcp_stdio
+  command: [uv, run, --frozen, python, -m, plugin]
+
+permissions > nanoagent.plugin.v0001.PermissionsConfig:
+  network > nanoagent.plugin.v0001.NetworkConfig:
+    hosts: []
+  filesystem > nanoagent.plugin.v0001.FilesystemConfig:
+    write: [workspace]
+
+# One entry per contract.Tool; its input and output classes are contract.TOOLS's.
+tools > dict[contract.Tool, nanoagent.plugin.v0001.ToolConfig]:
+  read_board:
+    description: Read a bundled tic-tac-toe board image, cell by cell from its pixels, as its rows and the cells X and O hold; it never says which move is best
+
+# One entry per contract.Task; its input and output classes are contract.TASKS's.
+tasks > dict[contract.Task, nanoagent.plugin.v0001.TaskConfig]:
+  best-move:
+    description: Find the best move on a tic-tac-toe board image. Boards 1 to 40 are 3x3 (three in a row wins), 41 to 50 are 4x4 (four in a row wins); the board shows whose turn it is. Never work out a move yourself
+    runner: agent
+    tools: [read_board]
+    reference: null
+    instructions: |-
+      Call read_board once with the board. It gives the rows, top row first, and the cells X and O hold: columns a, b, c (and d) from the left, rows 1, 2, 3 (and 4) from the bottom. On a 3x3 board three in a row wins; on a 4x4 board, four in a row (a whole row, column or diagonal).
+      X moves first, so the player to move is X when both have as many marks, otherwise O. Find its best move: win now if it can; else block the opponent's line; else make two threats at once; else a move that keeps the draw. Think briefly, then call submit with the board, the player to move and the cell, e.g. b2.
+  show-board:
+    description: Show one of the board images, 1 to 50 (1 to 40 are 3x3, 41 to 50 are 4x4), only when the person asks to see a board; it does not find moves
+    runner: tool
+    tools: [read_board]
+    reference: null
+    instructions: Call read_board with the board, 1 to 50, and return what it reads.
